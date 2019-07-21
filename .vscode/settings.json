@@ -1,0 +1,33 @@
+{
+  "workbench.colorTheme": "Monokai Classic",
+  "workbench.iconTheme": "material-icon-theme",
+  "prettier.singleQuote": true,
+  "prettier.jsxSingleQuote": true,
+
+  // Python
+  "[python]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4
+  },
+
+  "python.linting.pylintArgs": ["--load-plugins=pylint_django"],
+
+  // Prettier
+  "editor.formatOnSave": true,
+  "prettier.jsxBracketSameLine": true,
+  "prettier.quoteProps": "consistent",
+  "editor.tabSize": 2,
+  "editor.wordWrap": "on",
+  "prettier.semi": false,
+
+  // Emmet
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+  "emmet.triggerExpansionOnTab": true,
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "files.autoSave": "off",
+  "prettier.eslintIntegration": true,
+  "eslint.autoFixOnSave": true
+}
