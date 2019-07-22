@@ -1,59 +1,62 @@
-import React, { Fragment } from 'react'
-import Context from '../Context'
+import React, { Fragment, useContext } from 'react'
+import { Context } from '../Context'
 import { UserForm } from '../components/UserForm'
 import { RegisterMutation } from '../container/RegisterMutation'
 import { LoginMutation } from '../container/LoginMutation'
 
-export const NotRegisteredUser = () => (
-  <Context.Consumer>
-    {({ activateAuth }) => {
-      return (
-        <Fragment>
-          <RegisterMutation>
-            {(register, { data, loading, error }) => {
-              const onSubmit = ({ email, password }) => {
-                const input = { email, password }
-                const variables = { input }
-                register({ variables }).then(activateAuth)
-              }
+export const NotRegisteredUser = () => {
+  const { activateAuth } = useContext(Context)
 
-              const errorMsg =
-                error && 'El usuario ya existe o hay algún problema.'
+  return (
+    <Fragment>
+      <RegisterMutation>
+        {(register, { data, loading, error }) => {
+          const onSubmit = ({ email, password }) => {
+            const input = { email, password }
+            const variables = { input }
+            register({ variables }).then(({ data }) => {
+              const { signup } = data
+              activateAuth(signup)
+            })
+          }
 
-              return (
-                <UserForm
-                  error={errorMsg}
-                  disabled={loading}
-                  title='Registrarse'
-                  onSubmit={onSubmit}
-                />
-              )
-            }}
-          </RegisterMutation>
+          const errorMsg = error && 'El usuario ya existe o hay algún problema.'
 
-          <LoginMutation>
-            {(login, { error, data, loading }) => {
-              const onSubmit = ({ email, password }) => {
-                const input = { email, password }
-                const variables = { input }
-                login({ variables }).then(activateAuth)
-              }
+          return (
+            <UserForm
+              error={errorMsg}
+              disabled={loading}
+              title='Registrarse'
+              onSubmit={onSubmit}
+            />
+          )
+        }}
+      </RegisterMutation>
 
-              const errorMsg =
-                error && 'La contraseña no es correcta o el usuario no existe.'
+      <LoginMutation>
+        {(login, { error, data, loading }) => {
+          const onSubmit = ({ email, password }) => {
+            const input = { email, password }
+            const variables = { input }
+            login({ variables }).then(({ data }) => {
+              const { login } = data
+              activateAuth(login)
+            })
+          }
 
-              return (
-                <UserForm
-                  error={errorMsg}
-                  disabled={loading}
-                  title='Iniciar sesión'
-                  onSubmit={onSubmit}
-                />
-              )
-            }}
-          </LoginMutation>
-        </Fragment>
-      )
-    }}
-  </Context.Consumer>
-)
+          const errorMsg =
+            error && 'La contraseña no es correcta o el usuario no existe.'
+
+          return (
+            <UserForm
+              error={errorMsg}
+              disabled={loading}
+              title='Iniciar sesión'
+              onSubmit={onSubmit}
+            />
+          )
+        }}
+      </LoginMutation>
+    </Fragment>
+  )
+}
